@@ -6,14 +6,14 @@ R="\033[31m"
 G="\033[32m"
 B="\033[34m"
 Y="\033[33m"
-C='\033[36m'
-M='\033[35m'
+C="\033[36m"
+M="\033[35m"
 LR="\033[1;31m"
 LG="\033[1;32m"
 LB="\033[1;34m"
 LY="\033[1;33m"
-LC='\033[1;36m'
-LM='\033[1;35m'
+LC="\033[1;36m"
+LM="\033[1;35m"
 RB="\033[41;37m"
 GB="\033[42;37m"
 BB="\033[44;37m"
@@ -139,7 +139,6 @@ echo -e ""
 echo -e "${INFO} ${Y}Installing oh-my-zsh${N}"
 sleep 1
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-./termux.sh
 }
 
 setup_ohmyzsh() {
