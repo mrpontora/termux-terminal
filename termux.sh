@@ -25,20 +25,12 @@ INFO="${C}[i]${N}"
 PLUS="${Y}[+]${N}"
 
 install_ohmyzsh() {
-# Check Update
-echo -e "${INFO} ${Y}Installing package update${N}"
-sleep 1
-termux-setup-storage
-sleep 3
-apt list --upgradable
-pkg upgrade -y
-apt autoremove --purge -y
-clear
-
 # Setup Repo
 echo -e "${INFO} ${Y}Install root-repo & x11-repo${N}"
 echo -e ""
 sleep 1
+termux-setup-storage
+sleep 3
 pkg install root-repo -y
 pkg install x11-repo -y
 pkg install termux-api -y
