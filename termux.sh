@@ -25,12 +25,20 @@ INFO="${C}[i]${N}"
 PLUS="${Y}[+]${N}"
 
 install_ohmyzsh() {
+# Check Update
+echo -e "${INFO} ${Y}Installing package update${N}"
+sleep 1
+termux-setup-storage
+sleep 3
+apt list --upgradable
+pkg upgrade -y
+apt autoremove --purge -y
+clear
+
 # Setup Repo
 echo -e "${INFO} ${Y}Install root-repo & x11-repo${N}"
 echo -e ""
 sleep 1
-termux-setup-storage
-sleep 3
 pkg install root-repo -y
 pkg install x11-repo -y
 pkg install termux-api -y
@@ -50,16 +58,6 @@ sed -i 's+# terminal-cursor-style = block+terminal-cursor-style = bar+g' ~/.term
 fi
 
 # Install Package
-gitinfo=$(git --version)
-zshinfo=$(zsh --version)
-goinfo=$(go version)
-pythoninfo=$(python --version)
-pipinfo=$(pip --version)
-sslinfo=$(openssl version)
-shellinfo=$(shellcheck --version)
-shfmtinfo=$(shfmt --version)
-egetinfo=$(eget --version)
-microinfo=$(micro --version)
 echo -e "${INFO} ${Y}Installing initial package${N}"
 echo -e ""
 sleep 1
@@ -69,18 +67,6 @@ go install github.com/zyedidia/eget@latest
 echo -e "5" | eget zyedidia/micro
 clear
 echo -e "${OK} ${B}Initial package installed:${N}"
-sleep 1
-echo -e "${OK} ${B}$gitinfo${N}"
-echo -e "${OK} ${B}$zshinfo${N}"
-echo -e "${OK} ${B}$goinfo${N}"
-echo -e "${OK} ${B}$pythoninfo${N}"
-echo -e "${OK} ${B}$pipinfo${N}"
-echo -e "${OK} ${B}$sslinfo${N}"
-echo -e "${OK} ${B}$shellinfo${N}"
-echo -e "${OK} ${B}$shfmtinfo${N}"
-echo -e "${OK} ${B}$egetinfo${N}"
-echo -e "${OK} ${B}$microinfo${N}"
-echo -e ""
 echo -e "${INFO} ${Y}Installing pip package${N}"
 sleep 1
 python -m pip install --upgrade pip
@@ -88,13 +74,6 @@ pip install lolcat
 pip install Pygments
 echo -e ""
 echo -e "${OK} ${B}Pip package installed${N}"
-sleep 1
-lolcatinfo=$(pip list | grep 'lolcat')
-pygmentsinfo=$(pip list | grep 'Pygments')
-echo -e "${OK} ${B}$lolcatinfo${N}"
-echo -e "${OK} ${B}$pygmentsinfo${N}"
-echo -e ""
-sleep 1
 echo -e "${INFO} ${Y}Setup ssh-key${N}"
 sleep 1
 ssh-keygen -b 4096 -t rsa
