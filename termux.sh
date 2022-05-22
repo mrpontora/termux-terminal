@@ -6,14 +6,14 @@ R="\033[31m"
 G="\033[32m"
 B="\033[34m"
 Y="\033[33m"
-C="\033[36m"
-M="\033[35m"
+C='\033[36m'
+M='\033[35m'
 LR="\033[1;31m"
 LG="\033[1;32m"
 LB="\033[1;34m"
 LY="\033[1;33m"
-LC="\033[1;36m"
-LM="\033[1;35m"
+LC='\033[1;36m'
+LM='\033[1;35m'
 RB="\033[41;37m"
 GB="\033[42;37m"
 BB="\033[44;37m"
@@ -66,18 +66,18 @@ go install mvdan.cc/sh/v3/cmd/shfmt@latest
 go install github.com/zyedidia/eget@latest
 echo -e "5" | eget zyedidia/micro
 clear
-echo -e "${OK} ${B}Initial package installed:${N}"
+echo -e "${OK} ${Y}Initial package installed:${N}"
 sleep 1
-echo -e "${PLUS} ${B}$gitinfo${N}"
-echo -e "${PLUS} ${B}$zshinfo${N}"
-echo -e "${PLUS} ${B}$goinfo${N}"
-echo -e "${PLUS} ${B}$pythoninfo${N}"
-echo -e "${PLUS} ${B}$pipinfo${N}"
-echo -e "${PLUS} ${B}$sslinfo${N}"
-echo -e "${PLUS} ${B}$shellinfo${N}"
-echo -e "${PLUS} ${B}$shfmtinfo${N}"
-echo -e "${PLUS} ${B}$egetinfo${N}"
-echo -e "${PLUS} ${B}$microinfo${N}"
+echo -e "${OK} ${B}$gitinfo${N}"
+echo -e "${OK} ${B}$zshinfo${N}"
+echo -e "${OK} ${B}$goinfo${N}"
+echo -e "${OK} ${B}$pythoninfo${N}"
+echo -e "${OK} ${B}$pipinfo${N}"
+echo -e "${OK} ${B}$sslinfo${N}"
+echo -e "${OK} ${B}$shellinfo${N}"
+echo -e "${OK} ${B}$shfmtinfo${N}"
+echo -e "${OK} ${B}$egetinfo${N}"
+echo -e "${OK} ${B}$microinfo${N}"
 echo -e ""
 echo -e "${INFO} ${Y}Installing pip package${N}"
 sleep 1
@@ -85,12 +85,12 @@ python -m pip install --upgrade pip
 pip install lolcat
 pip install Pygments
 echo -e ""
-echo -e "${OK} ${B}Pip package installed${N}"
+echo -e "${OK} ${Y}Pip package installed${N}"
 sleep 1
 lolcatinfo=$(pip list | grep 'lolcat')
 pygmentsinfo=$(pip list | grep 'Pygments')
-echo -e "${PLUS} ${B}$lolcatinfo${N}"
-echo -e "${PLUS} ${B}$pygmentsinfo${N}"
+echo -e "${OK} ${B}$lolcatinfo${N}"
+echo -e "${OK} ${B}$pygmentsinfo${N}"
 echo -e ""
 sleep 1
 echo -e "${INFO} ${Y}Setup ssh-key${N}"
@@ -128,13 +128,14 @@ cd
 
 # Install Oh-My-Zsh
 echo -e ""
-echo -e "${PLUS} ${B}This script will be auto exit after oh-my-zsh successful installed for the first time${N}"
-echo -e "${PLUS} ${B}Enter ./termux.sh to continue setup oh-my-zsh completely"
+echo -e "${INFO} ${R}This script will be auto exit after oh-my-zsh successful installed for the first time${N}"
+echo -e "${INFO} ${R}Enter ./termux.sh to continue setup oh-my-zsh completely"
 sleep 3
 echo -e ""
 echo -e "${INFO} ${Y}Installing oh-my-zsh${N}"
 sleep 1
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+./termux.sh
 }
 
 setup_ohmyzsh() {
@@ -165,6 +166,9 @@ echo -e "" >> /data/data/com.termux/files/usr/etc/zshrc
 echo -e "# GOPATH" >> /data/data/com.termux/files/usr/etc/zshrc
 echo -e "export PATH=$PATH:$HOME/go/bin" >> /data/data/com.termux/files/usr/etc/zshrc
 fi
+cd /go/bin
+wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/add-host
+cd
 clear
 
 # Check Update
@@ -173,11 +177,17 @@ sleep 1
 apt list --upgradable
 pkg upgrade -y
 apt autoremove --purge -y
+if [[ -f ~/.p10k.zsh ]]; then
+rm -r ~/.p10k.zsh
+wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/.p10k.zsh
+else
+wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/.p10k.zsh
+fi
 clear
 echo -e "${OK} ${Y}Termux setup is completed${N}"
-echo -e "${OK} ${Y}Oh-my-zsh install is completed${N}"
+echo -e "${OK} ${Y}oh-my-zsh install is completed${N}"
 echo -e ""
-echo -e "${INFO} ${Y}Enter to exit:${N} \c"
+echo -e "${INFO} ${Y}Enter to exit..${N} \c"
 read option
 case $option in
 *) pkg autoclean
