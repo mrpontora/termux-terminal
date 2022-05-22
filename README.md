@@ -12,7 +12,8 @@ This script will install package dependencies for Termux customization.
 ![](https://img.shields.io/badge/ANDROID-3DDC84?style=flat&color=brightgreen&logo=android&logoColor=white)
 ![](https://img.shields.io/badge/BASH_SCRIPT-%23121011.svg?style=flat&color=darkslategray&logo=gnu-bash&logoColor=white)
 ```bash
-wget https://raw.githubusercontent.com/pontora/termux-terminal/main/termux.sh
-chmod +x termux.sh
-./termux.sh
+termux-setup-storage; termux-wake-lock; pkg install wget curl git -y; pkg upgrade -y;
+```
+```bash
+wget https://raw.githubusercontent.com/pontora/termux-terminal/main/termux.sh; chmod +x termux.sh; ./termux.sh;
 ```
