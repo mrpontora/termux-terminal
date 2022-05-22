@@ -48,7 +48,7 @@ sleep 3
 echo -e "${INFO} ${G}Installing initial package ...${N}"
 echo -e ""
 sleep 2
-pkg install curl wget git zip unzip tar zsh golang python openssh openssl-tool shellcheck -y
+pkg install unzip tar golang python openssl-tool zsh shellcheck -y
 echo -e ""
 echo -e "${OK} ${B}Initial package installed!${N}"
 sleep 3
