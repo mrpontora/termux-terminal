@@ -49,5 +49,5 @@ else
 fi
 echo -e ""
 echo -e "${OK} ${B}New host added${N}"
-echo -e "${B}Run this command to login:${N} ssh $host ${B}remote server${N}"
+echo -e "    ${B}Run this command to login:${N} ssh $host ${B}remote server${N}"
 echo -e "" 
