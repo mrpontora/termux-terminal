@@ -1,0 +1,26 @@
+#!/bin/bash
+
+echo -e "===================="
+echo -e "    ADD SSH HOST    "
+echo -e "===================="
+echo -e "Hostname: \c"
+read host
+echo -e "IP Address: \c"
+read ip
+echo -e "User ID: \c"
+read user
+echo -e "Port: \c"
+read port
+
+if [[ -f ~/.ssh/config ]]; then
+	echo -e "Host $host" >> ~/.ssh/config
+	echo -e "    HostName $ip" >> ~/.ssh/config
+	echo -e "    User $user" >> ~/.ssh/config
+	echo -e "    Port $port\n" >> ~/.ssh/config
+else
+	touch ~/.ssh/config
+	echo -e "Host $host" >> ~/.ssh/config
+	echo -e "    HostName $ip" >> ~/.ssh/config
+	echo -e "    User $user" >> ~/.ssh/config
+	echo -e "    Port $port\n" >> ~/.ssh/config
+fi
