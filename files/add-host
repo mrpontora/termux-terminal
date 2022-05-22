@@ -1,17 +1,40 @@
 #!/bin/bash
 
-echo -e "===================="
-echo -e "    ADD SSH HOST    "
-echo -e "===================="
-echo -e "Hostname: \c"
-read host
-echo -e "IP Address: \c"
-read ip
-echo -e "User ID: \c"
-read user
-echo -e "Port: \c"
-read port
+# Color
+N="\033[0m"
+R="\033[31m"
+G="\033[32m"
+B="\033[34m"
+Y="\033[33m"
+C='\033[36m'
+M='\033[35m'
+LR="\033[1;31m"
+LG="\033[1;32m"
+LB="\033[1;34m"
+LY="\033[1;33m"
+LC='\033[1;36m'
+LM='\033[1;35m'
+RB="\033[41;37m"
+GB="\033[42;37m"
+BB="\033[44;37m"
 
+# Notification
+OK="${G}[✓]${N}"
+ERROR="${R}[!]${N}"
+INFO="${C}[i]${N}"
+PLUS="${Y}[+]${N}"
+
+echo -e "${G}====================${N}"
+echo -e "${B}    ADD SSH HOST    ${N}"
+echo -e "${G}====================${N}"
+echo -e "${B}Hostname:${N} \c"
+read host
+echo -e "${B}IPv4 Address:${N} \c"
+read ip
+echo -e "${B}Username:${N} \c"
+read user
+echo -e "${B}SSH Port:${N} \c"
+read port
 if [[ -f ~/.ssh/config ]]; then
 	echo -e "Host $host" >> ~/.ssh/config
 	echo -e "    HostName $ip" >> ~/.ssh/config
@@ -24,3 +47,7 @@ else
 	echo -e "    User $user" >> ~/.ssh/config
 	echo -e "    Port $port\n" >> ~/.ssh/config
 fi
+echo -e ""
+echo -e "${OK} ${B}New host added${N}"
+echo -e "${B}Run this command to login:${N} ssh $host ${B}remote server${N}"
+echo -e "" 
