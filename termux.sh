@@ -25,6 +25,16 @@ INFO="${C}[i]${N}"
 PLUS="${Y}[+]${N}"
 
 install_ohmyzsh() {
+# Check Update
+echo -e "${INFO} ${Y}Installing package update${N}"
+sleep 1
+termux-setup-storage
+sleep 3
+apt list --upgradable
+pkg upgrade -y
+apt autoremove --purge -y
+clear
+
 # Setup Repo
 echo -e "${INFO} ${Y}Install root-repo & x11-repo${N}"
 echo -e ""
@@ -66,7 +76,7 @@ go install mvdan.cc/sh/v3/cmd/shfmt@latest
 go install github.com/zyedidia/eget@latest
 echo -e "5" | eget zyedidia/micro
 clear
-echo -e "${OK} ${Y}Initial package installed:${N}"
+echo -e "${OK} ${B}Initial package installed:${N}"
 sleep 1
 echo -e "${OK} ${B}$gitinfo${N}"
 echo -e "${OK} ${B}$zshinfo${N}"
@@ -85,7 +95,7 @@ python -m pip install --upgrade pip
 pip install lolcat
 pip install Pygments
 echo -e ""
-echo -e "${OK} ${Y}Pip package installed${N}"
+echo -e "${OK} ${B}Pip package installed${N}"
 sleep 1
 lolcatinfo=$(pip list | grep 'lolcat')
 pygmentsinfo=$(pip list | grep 'Pygments')
@@ -171,12 +181,7 @@ wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/add-ho
 cd
 clear
 
-# Check Update
-echo -e "${INFO} ${Y}Installing package update${N}"
-sleep 1
-apt list --upgradable
-pkg upgrade -y
-apt autoremove --purge -y
+# Final Setup
 if [[ -f ~/.p10k.zsh ]]; then
 rm -r ~/.p10k.zsh
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/.p10k.zsh
@@ -184,8 +189,8 @@ else
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/.p10k.zsh
 fi
 clear
-echo -e "${OK} ${Y}Termux setup is completed${N}"
-echo -e "${OK} ${Y}oh-my-zsh install is completed${N}"
+echo -e "${OK} ${B}Termux setup is completed${N}"
+echo -e "${OK} ${B}oh-my-zsh install is completed${N}"
 echo -e ""
 echo -e "${INFO} ${Y}Enter to exit..${N} \c"
 read option
@@ -198,10 +203,23 @@ case $option in
 esac
 }
 
-if [[ -f /data/data/com.termux/files/usr/bin/zsh ]]; then
 clear
+check=$(whereis zsh | awk '{print $2}')
+if [[ $check == "/data/data/com.termux/files/usr/bin/wget" ]]; then
+echo -e "${OK} ${B}oh-my-zsh is installed${N}"
 setup_ohmyzsh
 else
-clear
-install_ohmyzsh
+echo -e "${BB} README: ${N}"
+echo -e " [1] ${Y}Please do not close or exit the app while script start to avoid error${N}"
+echo -e " [2] ${Y}Press Ctrl+C to force stop the script${N}"
+echo -e ""
+echo -e "${Y}Confirm to continue [y/n]?${N} \c"
+read reply
+case $reply in
+y) clear
+   install_ohmyzsh
+   ;;
+n) exit
+   ;;
+esac
 fi
