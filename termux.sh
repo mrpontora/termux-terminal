@@ -48,8 +48,6 @@ sed -i 's+# terminal-cursor-style = block+terminal-cursor-style = bar+g' ~/.term
 fi
 
 # Install Package
-curlinfo=$(curl --version)
-wgetinfo=$(wget --version)
 gitinfo=$(git --version)
 zshinfo=$(zsh --version)
 goinfo=$(go version)
@@ -70,8 +68,6 @@ echo -e "5" | eget zyedidia/micro
 clear
 echo -e "${OK} ${B}Initial package installed:${N}"
 sleep 1
-echo -e "${PLUS} ${B}$curlinfo${N}"
-echo -e "${PLUS} ${B}$wgetinfo${N}"
 echo -e "${PLUS} ${B}$gitinfo${N}"
 echo -e "${PLUS} ${B}$zshinfo${N}"
 echo -e "${PLUS} ${B}$goinfo${N}"
