@@ -25,66 +25,67 @@ INFO="${C}[i]${N}"
 PLUS="${Y}[+]${N}"
 
 install_ohmyzsh() {
-# Check Update
-echo -e "${INFO} ${Y}Installing package update${N}"
-sleep 1
-termux-setup-storage
-sleep 3
-apt list --upgradable
-pkg upgrade -y
-apt autoremove --purge -y
-clear
-
 # Setup Repo
-echo -e "${INFO} ${Y}Install root-repo & x11-repo${N}"
+echo -e "${INFO} ${G}Install root-repo & x11-repo ...${N}"
 echo -e ""
-sleep 1
+sleep 2
 pkg install root-repo -y
 pkg install x11-repo -y
 pkg install termux-api -y
 termux-change-repo
-clear
-echo -e "${INFO} ${Y}Install package update${N}"
 echo -e ""
-sleep 1
-apt list --upgradable
-pkg upgrade -y
+echo -e "${OK} ${B}Repo installed!${N}"
+sleep 3
 clear
-echo -e "${INFO} ${Y}Configuring termux.properties${N}"
-sleep 1
+echo -e "${INFO} ${G}Configuring termux.properties ...${N}"
+sleep 2
 if [[ -f ~/.termux/termux.properties ]]; then
 sed -i 's+# allow-external-apps = true+allow-external-apps = true+g' ~/.termux/termux.properties
 sed -i 's+# terminal-cursor-style = block+terminal-cursor-style = bar+g' ~/.termux/termux.properties
 fi
-
+sleep 3
 # Install Package
-echo -e "${INFO} ${Y}Installing initial package${N}"
+echo -e "${INFO} ${G}Installing initial package ...${N}"
 echo -e ""
-sleep 1
+sleep 2
 pkg install curl wget git zip unzip tar zsh golang python openssh openssl-tool shellcheck -y
+echo -e ""
+echo -e "${OK} ${B}Initial package installed!${N}"
+sleep 3
+clear
+echo -e "${INFO} ${G}Installing go package ...${N}"
+echo -e ""
+sleep 2
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 go install github.com/zyedidia/eget@latest
 echo -e "5" | eget zyedidia/micro
+echo -e ""
+echo -e "${OK} ${B}Go package installed!${N}"
+sleep 3
 clear
-echo -e "${OK} ${B}Initial package installed:${N}"
-echo -e "${INFO} ${Y}Installing pip package${N}"
-sleep 1
+echo -e "${INFO} ${G}Installing pip package ...${N}"
+echo -e ""
+sleep 2
 python -m pip install --upgrade pip
 pip install lolcat
 pip install Pygments
 echo -e ""
-echo -e "${OK} ${B}Pip package installed${N}"
-echo -e "${INFO} ${Y}Setup ssh-key${N}"
-sleep 1
+echo -e "${OK} ${B}Pip package installed!${N}"
+sleep 3
+echo -e "${INFO} ${G}Setup ssh-key ...${N}"
+echo -e ""
+sleep 2
 ssh-keygen -b 4096 -t rsa
 if [[ -d ~/.ssh ]]; then
 touch ~/.ssh/config
 fi
+sleep 3
 clear
 
 # Setup MOTD
-echo -e "${INFO} ${Y}Setup motd file${N}"
-sleep 1
+echo -e "${INFO} ${G}Setup MOTD file ...${N}"
+echo -e ""
+sleep 2
 rm -r /data/data/com.termux/files/usr/etc/motd
 cd /data/data/com.termux/files/usr/etc
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/motd
@@ -106,32 +107,43 @@ rm -r ~/.motd/35-diskspace
 rm -r ~/.motd/10-termux-banner.disabled
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/10-termux-banner
 cd
+echo -e ""
+echo -e "${OK} ${B}MOTD file setup successful!${N}"
+sleep 3
 
 # Install Oh-My-Zsh
 echo -e ""
-echo -e "${INFO} ${R}This script will be auto exit after oh-my-zsh successful installed for the first time${N}"
-echo -e "${INFO} ${R}Enter ./termux.sh to continue setup oh-my-zsh completely"
-sleep 3
+echo -e "${INFO} ${G}Enter ./termux.sh to continue setup oh-my-zsh after exit and reopen Termux ...${N}"
+sleep 2
+echo -e "${INFO} ${G}Installing oh-my-zsh ...${N}"
 echo -e ""
-echo -e "${INFO} ${Y}Installing oh-my-zsh${N}"
-sleep 1
+sleep 2
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-./termux.sh
 }
 
 setup_ohmyzsh() {
-echo -e "${INFO} ${Y}Installing oh-my-zsh plugin${N}"
-sleep 1
+echo -e "${OK} ${B}Oh-my-zsh installed!${N}"
+sleep 3
+echo -e "${INFO} ${G}Installing oh-my-zsh plugin ...${N}"
+echo -e ""
+sleep 2
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git \
   ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-clear
-echo -e "${INFO} ${Y}Installing oh-my-zsh theme${N}"
-sleep 1
+echo -e ""
+echo -e "${OK} ${B}Plugin installed!${N}"
+sleep 3
+echo -e "${INFO} ${G}Installing oh-my-zsh theme ...${N}"
+echo -e ""
+sleep 2
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
+echo -e ""
+echo -e "${OK} ${B}Theme installed!${N}"
+sleep 3
 clear
-echo -e "${INFO} ${Y}Configuring .zshrc file${N}"
-sleep 1
+echo -e "${INFO} ${G}Setup .zshrc file ...${N}"
+echo -e ""
+sleep 2
 sed -i 's+ZSH_THEME="robbyrussell"+ZSH_THEME="powerlevel10k/powerlevel10k"+g' ~/.zshrc
 sed -i 's+plugins=(git)+plugins=(colorize copyfile copypath fast-syntax-highlighting history magic-enter safe-paste transfer zsh-autosuggestions)+g' ~/.zshrc
 cd ~/.oh-my-zsh/custom
@@ -150,20 +162,26 @@ fi
 cd /go/bin
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/add-host
 cd
+echo -e ""
+echo -e "${OK} ${B}.zshrc file setup successful!${N}"
+sleep 3
 clear
 
 # Final Setup
+echo -e "${INFO} ${G}Finishing Termux setup ...${N}"
+echo -e ""
+sleep 2
 if [[ -f ~/.p10k.zsh ]]; then
 rm -r ~/.p10k.zsh
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/.p10k.zsh
 else
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/.p10k.zsh
 fi
-clear
-echo -e "${OK} ${B}Termux setup is completed${N}"
-echo -e "${OK} ${B}oh-my-zsh install is completed${N}"
 echo -e ""
-echo -e "${INFO} ${Y}Enter to exit..${N} \c"
+echo -e "${OK} ${B}Termux setup completed!${N}"
+echo -e "${OK} ${B}oh-my-zsh install completed!${N}"
+echo -e ""
+echo -e "${INFO} ${G}Press enter to exit ...${N} \c"
 read option
 case $option in
 *) pkg autoclean
@@ -176,15 +194,14 @@ esac
 
 clear
 check=$(whereis zsh | awk '{print $2}')
-if [[ $check == "/data/data/com.termux/files/usr/bin/wget" ]]; then
-echo -e "${OK} ${B}oh-my-zsh is installed${N}"
+if [[ $check == "/data/data/com.termux/files/usr/bin/zsh" ]]; then
+clear
 setup_ohmyzsh
 else
-echo -e "${BB} README: ${N}"
-echo -e " [1] ${Y}Please do not close or exit the app while script start to avoid error${N}"
-echo -e " [2] ${Y}Press Ctrl+C to force stop the script${N}"
+echo -e "${INFO} ${G}Please do not close or exit the app while script start to avoid error ...${N}"
+echo -e "${INFO} ${G}Press Ctrl+C to force stop the script ...${N}"
 echo -e ""
-echo -e "${Y}Confirm to continue [y/n]?${N} \c"
+echo -e "${G}Confirm to start (y/n)?${N} \c"
 read reply
 case $reply in
 y) clear
