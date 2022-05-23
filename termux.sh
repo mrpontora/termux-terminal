@@ -37,18 +37,22 @@ echo -e ""
 echo -e "${OK} ${B}Repo installed!${N}"
 sleep 3
 clear
+if [[ -f ~/.termux/termux.properties ]]; then
 echo -e "${INFO} ${G}Configuring termux.properties ...${N}"
 sleep 2
-if [[ -f ~/.termux/termux.properties ]]; then
 sed -i 's+# allow-external-apps = true+allow-external-apps = true+g' ~/.termux/termux.properties
 sed -i 's+# terminal-cursor-style = block+terminal-cursor-style = bar+g' ~/.termux/termux.properties
+sed -i 's+# enforce-char-based-input = true+enforce-char-based-input = true+g' ~/.termux/termux.properties
+else
+echo -e "${ERROR} ${G}Not found any termux.properties!${N}"
 fi
 sleep 3
+
 # Install Package
 echo -e "${INFO} ${G}Installing initial package ...${N}"
 echo -e ""
 sleep 2
-pkg install unzip tar golang python openssl-tool zsh shellcheck -y
+pkg install curl wget git zip unzip tar zsh golang python openssh openssl-tool shellcheck -y
 echo -e ""
 echo -e "${OK} ${B}Initial package installed!${N}"
 sleep 3
@@ -58,7 +62,16 @@ echo -e ""
 sleep 2
 go install mvdan.cc/sh/v3/cmd/shfmt@latest
 go install github.com/zyedidia/eget@latest
-echo -e "5" | eget zyedidia/micro
+eget zyedidia/micro
+if [[ -d ~/go/bin ]]; then
+cd /go/bin
+wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/add-host
+else
+mkdir -p /go/bin
+cd /go/bin
+wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/add-host
+fi
+cd
 echo -e ""
 echo -e "${OK} ${B}Go package installed!${N}"
 sleep 3
@@ -145,7 +158,7 @@ echo -e "${INFO} ${G}Setup .zshrc file ...${N}"
 echo -e ""
 sleep 2
 sed -i 's+ZSH_THEME="robbyrussell"+ZSH_THEME="powerlevel10k/powerlevel10k"+g' ~/.zshrc
-sed -i 's+plugins=(git)+plugins=(colorize copyfile copypath fast-syntax-highlighting history magic-enter safe-paste transfer zsh-autosuggestions)+g' ~/.zshrc
+sed -i 's+plugins=(git)+plugins=(colorize copyfile copypath fast-syntax-highlighting history safe-paste transfer zsh-autosuggestions)+g' ~/.zshrc
 cd ~/.oh-my-zsh/custom
 wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/alias.zsh
 cd
@@ -159,9 +172,6 @@ echo -e "" >> /data/data/com.termux/files/usr/etc/zshrc
 echo -e "# GOPATH" >> /data/data/com.termux/files/usr/etc/zshrc
 echo -e "export PATH=$PATH:$HOME/go/bin" >> /data/data/com.termux/files/usr/etc/zshrc
 fi
-cd /go/bin
-wget https://raw.githubusercontent.com/pontora/termux-terminal/main/files/add-host
-cd
 echo -e ""
 echo -e "${OK} ${B}.zshrc file setup successful!${N}"
 sleep 3
@@ -181,13 +191,12 @@ echo -e ""
 echo -e "${OK} ${B}Termux setup completed!${N}"
 echo -e "${OK} ${B}oh-my-zsh install completed!${N}"
 echo -e ""
-echo -e "${INFO} ${G}Press enter to exit ...${N} \c"
-read option
-case $option in
+echo -e "${INFO} ${G}Press enter to reload new configuration ...${N} \c"
+read reload
+case $reload in
 *) pkg autoclean
    pkg clean
-   clear
-   exit
+   source ~/.zshrc
    ;;
 esac
 }
